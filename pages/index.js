@@ -1,118 +1,444 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Logo from "@/public/logo.svg";
+import Working from "@/public/illustration-working.svg";
+import BrandRecog from "@/public/icon-brand-recognition.svg";
+import IconDet from "@/public/icon-detailed-records.svg";
+import IconCust from "@/public/icon-fully-customizable.svg";
+import FB from "@/public/icon-facebook.svg";
+import TW from "@/public/icon-twitter.svg";
+import PT from "@/public/icon-pinterest.svg";
+import IN from "@/public/icon-instagram.svg";
 
-const inter = Inter({ subsets: ['latin'] })
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
+  const inputRef = useRef();
+  const msgRef = useRef();
+  const formRef = useRef();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const openMenu = (e) => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const validURL = (str) => {
+    let pattern = new RegExp(
+      "^(http(s)://.)[-a-zA-Z0-9@:%._+~#=]{2,256}.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$"
+    );
+
+    return pattern.test(str);
+  };
+
+  const formSubmit = (e) => {
+    e.preventDefault();
+
+    if (inputRef.current && inputRef.current.value === "") {
+      if (msgRef.current) {
+        msgRef.current.innerHTML = "Please enter an URL";
+      }
+
+      inputRef.current.classList.add("border-red");
+    } else if (inputRef.current && !validURL(inputRef.value)) {
+      if (msgRef.current) {
+        msgRef.current.innerHTML = "Please enter a valid URL";
+      }
+
+      inputRef.current.classList.add("border-red");
+    } else if (inputRef.current) {
+      if (msgRef.current) {
+        msgRef.current.innerHTML = "";
+      }
+
+      inputRef.current.classList.remove("border-red");
+    }
+  };
+
+  useEffect(() => {
+    formRef.current
+      ? formRef.current.addEventListener("submit", formSubmit)
+      : undefined;
+  }, [formRef]);
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <nav className="relative container mx-auto p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-20">
+            <img src={Logo.src} alt="logo" />
+
+            <div className="hidden lg:flex space-x-8 font-bold">
+              <a
+                href="#"
+                className="text-grayishViolet hover:text-veryDarkViolet"
+              >
+                Features
+              </a>
+
+              <a
+                href="#"
+                className="text-grayishViolet hover:text-veryDarkViolet"
+              >
+                Pricing
+              </a>
+
+              <a
+                href="#"
+                className="text-grayishViolet hover:text-veryDarkViolet"
+              >
+                Resources
+              </a>
+            </div>
+          </div>
+
+          <div className="hidden lg:flex items-center space-x-6 font-bold text-grayishViolet">
+            <a href="#" className="hover:text-veryDarkViolet">
+              Login
+            </a>
+            <a
+              href="#"
+              className="px-8 py-3 font-bold text-white bg-cyan rounded-full hover:opacity-70"
+            >
+              Sign Up
+            </a>
+          </div>
+
+          <button
+            onClick={openMenu}
+            id="menu-btn"
+            type="button"
+            className={`block hamburger lg:hidden focus:outline-none ${
+              menuOpen ? "open" : ""
+            }`}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            <span className="hamburger-top"></span>
+            <span className="hamburger-middle"></span>
+            <span className="hamburger-bottom"></span>
+          </button>
         </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
+        <div
+          className={`absolute ${
+            menuOpen ? "flex" : "hidden"
+          } p-6 rounded-lg bg-darkViolet left-6 right-6 top-20 z-100`}
         >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          <div className="flex flex-col items-center justify-center w-full space-y-6 font-bold text-white rounded-sm">
+            <a href="#" className="w-full text-center">
+              Features
+            </a>
+            <a href="#" className="w-full text-center">
+              Pricing
+            </a>
+            <a href="#" className="w-full text-center">
+              Resources
+            </a>
+            <a
+              href="#"
+              className="w-full pt-6 border-t border-gray-400 text-center"
+            >
+              Log In
+            </a>
+            <a
+              href="#"
+              className="w-full py-3 rounded-full bg-cyan text-center"
+            >
+              Sign Up
+            </a>
+          </div>
+        </div>
+      </nav>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+      <section id="hero">
+        <div className="container flex flex-col-reverse mx-auto p-6 lg:flex-row">
+          <div className="flex flex-col lg:w-1/2 space-y-10 mb-44 lg:mt-16 xl:mb-52">
+            <h1 className="text-5xl font-bold text-center lg:text-6xl lg:max-w-md lg:text-left">
+              More than just shorter links
+            </h1>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
+            <p className="text-2xl text-center text-gray-400 lg:max-w-md lg:text-left">
+              Build your brand's recognition and get detailed insights on how
+              your links are performing.
+            </p>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
+            <div className="mx-auto lg:mx-0">
+              <a
+                href="#"
+                className="py-5 px-10 text-2xl font-bold text-white bg-cyan rounded-full lg:py-4 hover:opacity-70"
+              >
+                Get Started
+              </a>
+            </div>
+          </div>
+          <div className="mb-24 lg:w-1/2 mx-auto md:w-180 lg:mb-0">
+            <img src={Working.src} alt="working" />
+          </div>
+        </div>
+      </section>
+
+      <section id="shorten" className="relative bg-gray-100">
+        <div className="max-w-4xl mx-auto p-6 space-y-6">
+          <form
+            ref={formRef}
+            action=""
+            id="link-form"
+            className="relative flex flex-col w-full p-10 -mt-20 space-y-4 bg-darkViolet rounded-lg md:flex-row md:space-y-0 md:space-x-3"
+          >
+            <input
+              type="text"
+              className="flex-1 p-3 border-2 rounded-lg placeholder-yellow-500 focus:outline-none"
+              placeholder="Shorten a link here"
+              id="link-input"
+              ref={inputRef}
+            />
+
+            <button className="px-10 py-3 text-white bg-cyan rounded-lg hover:bg-cyanLight focus:outline-none md:py-2">
+              Shorten it!
+            </button>
+
+            <div
+              ref={msgRef}
+              className="absolute left-7 bottom-3 text-red text-small italic"
+            ></div>
+          </form>
+
+          <div className="flex flex-col items-center justify-between w-full p-6 bg-white rounded-lg md:flex-row">
+            <p className="font-bold text-center text-veryDarkViolet md:text-left">
+              https://artisancey.co.nz
+            </p>
+
+            <div className="flex flex-col items-center justify-end flex-1 space-x-4 space-y-2 md:flex-row md:space-y-0">
+              <div className="font-bold text-cyan">https://rel.ink/asd2De</div>
+              <button className="p-2 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none">
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center justify-between w-full p-6 bg-white rounded-lg md:flex-row">
+            <p className="font-bold text-center text-veryDarkViolet md:text-left">
+              https://artisancey.co.nz
+            </p>
+
+            <div className="flex flex-col items-center justify-end flex-1 space-x-4 space-y-2 md:flex-row md:space-y-0">
+              <div className="font-bold text-cyan">https://rel.ink/asd2De</div>
+              <button className="p-2 px-8 text-white bg-darkViolet rounded-lg hover:opacity-70 focus:outline-none">
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center justify-between w-full p-6 bg-white rounded-lg md:flex-row">
+            <p className="font-bold text-center text-veryDarkViolet md:text-left">
+              https://artisancey.co.nz
+            </p>
+
+            <div className="flex flex-col items-center justify-end flex-1 space-x-4 space-y-2 md:flex-row md:space-y-0">
+              <div className="font-bold text-cyan">https://rel.ink/asd2De</div>
+              <button className="p-2 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none">
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 bg-gray-100">
+        <div className="container mx-auto px-3">
+          <h2 className="text-4xl mb-6 font-bold text-center">
+            Advanced Statistics
           </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
+
+          <p className="max-w-xs mx-auto text-center text-gray-400">
+            Track how your links are performing axross the web with our advanced
+            statistics dashboard.
           </p>
-        </a>
-      </div>
-    </main>
-  )
+        </div>
+      </section>
+
+      <section className="pb-32 bg-gray-100">
+        <div className="relative container flex flex-col items-start px-6 mx-auto md:flex-row md:space-x-7">
+          <div className="hidden absolute top-24 w-10/12 left-16 h-3 bg-cyan md:block"></div>
+
+          <div className="absolute w-2 left-1/2 h-full -ml-1 bg-cyan md:hidden"></div>
+
+          <div className="relative flex flex-col p-6 space-y-6 bg-white rounded-lg md:w-1/3">
+            <div className="absolute -ml-10 left-1/2 -top-10 md:left-16">
+              <div className="flex items-center justify-center w-20 h-20 p-4 rounded-full bg-veryDarkViolet">
+                <img src={BrandRecog.src} alt="" />
+              </div>
+            </div>
+
+            <h5 className="pt-6 text-xl font-bold text-center capitalize md:text-left">
+              Brand Recognition
+            </h5>
+
+            <p className="text-center text-gray-400 md:text-left">
+              Boost your brand recognition with each click. Generic links don't
+              mean a thing. Branded links help instil confidence in your
+              content.
+            </p>
+          </div>
+
+          <div className="relative mt-24 md:mt-8 flex flex-col p-6 space-y-6 bg-white rounded-lg md:w-1/3">
+            <div className="absolute -ml-10 left-1/2 -top-10 md:left-16">
+              <div className="flex items-center justify-center w-20 h-20 p-4 rounded-full bg-veryDarkViolet">
+                <img src={IconDet.src} alt="" />
+              </div>
+            </div>
+
+            <h5 className="pt-6 text-xl font-bold text-center capitalize md:text-left">
+              Detailed records
+            </h5>
+
+            <p className="text-center text-gray-400 md:text-left">
+              Gain insights into who is clicking your links. Knowing when and
+              where people engage with your content helps inform better
+              decisions.
+            </p>
+          </div>
+
+          <div className="relative mt-24 md:mt-16 flex flex-col p-6 space-y-6 bg-white rounded-lg md:w-1/3">
+            <div className="absolute -ml-10 left-1/2 -top-10 md:left-16">
+              <div className="flex items-center justify-center w-20 h-20 p-4 rounded-full bg-veryDarkViolet">
+                <img src={IconCust.src} alt="" />
+              </div>
+            </div>
+
+            <h5 className="pt-6 text-xl font-bold text-center capitalize md:text-left">
+              Fully Customizable
+            </h5>
+
+            <p className="text-center text-gray-400 md:text-left">
+              Improve brand awareness and content discoverability through
+              customizable links, supercharging audience engagement.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" className="py-24 bg-darkViolet">
+        <div className="flex flex-col p-2 space-y-6">
+          <h5 className="mx-auto space-y-10 text-4xl font-bold text-center text-white">
+            Boost your links today
+          </h5>
+
+          <button className="px-10 py-5 mx-auto text-2xl font-bold text-white rounded-full bg-cyan hover:bg-cyanLight md:text-base md:py-3 focus:outline-none">
+            Get Started
+          </button>
+        </div>
+      </section>
+
+      <footer className="py-16 bg-veryDarkViolet">
+        <div className="container flex flex-col items-center justify-between mx-auto space-y-16 md:flex-row md:space-y-0 md:items-start">
+          <img src={Logo.src} alt="" />
+
+          <div className="flex flex-col space-y-16 md:space-x-20 md:flex-row md:space-y-0">
+            <div className="flex flex-col items-center w-full md:items-start">
+              <div className="mb-5 font-bold text-white capitalize">
+                Features
+              </div>
+
+              <div className="flex flex-col items-center space-y-3 md:items-start">
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Link Shortening
+                </a>
+
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Branded links
+                </a>
+
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Analytics
+                </a>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center w-full md:items-start">
+              <div className="mb-5 font-bold text-white capitalize">
+                Resources
+              </div>
+
+              <div className="flex flex-col items-center space-y-3 md:items-start">
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Blog
+                </a>
+
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Developers
+                </a>
+
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Support
+                </a>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center w-full md:items-start">
+              <div className="mb-5 font-bold text-white capitalize">
+                Compnany
+              </div>
+
+              <div className="flex flex-col items-center space-y-3 md:items-start">
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  About
+                </a>
+
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Our Team
+                </a>
+
+                <a
+                  href="#"
+                  className="capitalize text-grayishViolet hover:text-cyan"
+                >
+                  Careers/Contact
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex space-x-6">
+            <a href="#">
+              <img src={FB.src} alt="" className="ficon" />
+            </a>
+
+            <a href="#">
+              <img src={TW.src} alt="" className="ficon" />
+            </a>
+
+            <a href="#">
+              <img src={PT.src} alt="" className="ficon" />
+            </a>
+
+            <a href="#">
+              <img src={IN.src} alt="" className="ficon" />
+            </a>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
 }
